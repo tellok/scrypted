@@ -7,30 +7,32 @@ on:
   pull_request:
     paths: ["install/**", ".github/workflows/test.yml"]
   workflow_dispatch:
-  
 jobs:
   test_local:
     name: Test local installation on ${{ matrix.runner }}
-    runs-on: ${{ matrix.runner }}
+    runs-on:
+    - self-hosted
+    - tower
+    - ${{ matrix.runner }}
+    - tower-run-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       fail-fast: false
       matrix:
         runner: [ubuntu-latest, macos-14, macos-13, windows-latest]
-    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Parse latest server release
-        id: parse_server
-        shell: bash
-        run: |
-          VERSION=$(cat ./server/package-lock.json | jq -r '.version')
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Will test @scrypted/server@$VERSION"
+    - name: Parse latest server release
+      id: parse_server
+      shell: bash
+      run: |
+        VERSION=$(cat ./server/package-lock.json | jq -r '.version')
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+        echo "Will test @scrypted/server@$VERSION"
 
-      - name: Install scrypted server
-        uses: scryptedapp/setup-scrypted@v0.0.2
-        with:
-          branch: ${{ github.sha }}
-          version: ${{ steps.parse_server.outputs.version }}
+    - name: Install scrypted server
+      uses: scryptedapp/setup-scrypted@v0.0.2
+      with:
+        branch: ${{ github.sha }}
+        version: ${{ steps.parse_server.outputs.version }}
