@@ -6,10 +6,7 @@ on:
 jobs:
   build:
     name: Push Docker image to Docker Hub
-    runs-on:
-    - self-hosted
-    - tower
-    - tower-run-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: ["self-hosted"]
     env:
       NODE_VERSION: '20'
     strategy:
@@ -83,10 +80,7 @@ jobs:
   build-nvidia:
     name: Push NVIDIA Docker image to Docker Hub
     needs: build
-    runs-on:
-    - self-hosted
-    - tower
-    - tower-run-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: ["self-hosted"]
     strategy:
       matrix:
         BASE: ["jammy"]

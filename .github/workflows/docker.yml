@@ -15,11 +15,8 @@ on:
 jobs:
   build:
     name: Push Docker image to Docker Hub
-    runs-on:
+    runs-on: ["self-hosted"]
 #     runs-on: ubuntu-latest
-    - self-hosted
-    - tower
-    - tower-run-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
         BASE: [["jammy-nvidia", ".s6"], ["jammy-full", ".s6"], ["jammy-lite", ""]]

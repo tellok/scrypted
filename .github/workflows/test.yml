@@ -10,11 +10,7 @@ on:
 jobs:
   test_local:
     name: Test local installation on ${{ matrix.runner }}
-    runs-on:
-    - self-hosted
-    - tower
-    - ${{ matrix.runner }}
-    - tower-run-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: ["self-hosted"]
     strategy:
       fail-fast: false
       matrix:
