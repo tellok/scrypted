@@ -10,11 +10,11 @@ on:
 jobs:
   test_local:
     name: Test local installation on ${{ matrix.runner }}
-    runs-on: ["self-hosted"]
+    runs-on: "${{ matrix.runner }}"
     strategy:
       fail-fast: false
       matrix:
-        runner: [ubuntu-latest, macos-14, macos-13, windows-latest]
+        runner: ["ubuntu-latest", "macos-15", "macos-15-intel", "windows-latest"]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
